@@ -28,7 +28,7 @@ td.lo{background:var(--hi);color:var(--good);font-weight:700}td.hx{background:va
 <div class="top"><h1>🪨 จัดซื้อ ทราย-หิน</h1><div class="acts"><button onclick="load(true)" title="รีเฟรช">⟳</button><a class="dl" href="https://docs.google.com/spreadsheets/d/1NRcslhSAtKtuFfSMFv9SxPis9Xe8CvMgslF6T-1YIwk/edit" target="_blank" rel="noopener">DATA</a></div></div><div class="sub" id="sub"></div>
 <div class="row tabs" id="tabs"></div><div class="row sc" id="mo"></div><div class="row sc" id="chips"></div><div id="out"></div></div>
 <script>
-let D;const API='https://script.google.com/macros/s/AKfycbypo9kuWyCcWvC0N6IOGRdYREe1GF0OkZ4HjQ6mrJvoS4Df_QbuiB4_-vOgJKPTt8KA/exec';
+let SUF='',CUR=null,CERR=0;let D;const API='https://script.google.com/macros/s/AKfycbypo9kuWyCcWvC0N6IOGRdYREe1GF0OkZ4HjQ6mrJvoS4Df_QbuiB4_-vOgJKPTt8KA/exec';
 let tab='bkk',br='all',mo=-1;
 const COL=['var(--sand)','var(--stone)','var(--teal)'];
 const f=x=>x==null?'–':Math.round(x).toLocaleString('en'),sm=a=>a.reduce((s,x)=>s+x,0);
@@ -43,12 +43,48 @@ function line(d,idx){const n=d.months.length,Wd=620,H=230,L=48,B=24,T=10,all=idx
 let s=`<svg viewBox="0 0 ${Wd} ${H}">`;for(let g=0;g<=mx;g+=mx/4)s+=`<line x1="${L}" x2="${Wd-10}" y1="${y(g)}" y2="${y(g)}" stroke="var(--bd)"/><text x="${L-6}" y="${y(g)+4}" font-size="11" text-anchor="end" fill="var(--mu)">${f(g)}</text>`;
 d.months.forEach((m,i)=>s+=`<text x="${x(i)}" y="${H-6}" font-size="11" text-anchor="middle" fill="var(--mu)">${m}</text>`);
 idx.forEach((pi,j)=>{const p=Array(n).fill(null);d.tot.forEach(t=>p[t.m]=t.p[pi]);let dd='';p.forEach((v,i)=>{if(v==null)return;dd+=(dd&&p[i-1]!=null?'L':'M')+x(i)+' '+y(v)});s+=`<path d="${dd}" fill="none" stroke="${COL[j]}" stroke-width="2.5"/>`;p.forEach((v,i)=>{if(v!=null)s+=`<circle cx="${x(i)}" cy="${y(v)}" r="3.5" fill="${COL[j]}"/>`})});return s+'</svg>'}
+
+const SID='1NRcslhSAtKtuFfSMFv9SxPis9Xe8CvMgslF6T-1YIwk',GID='358474663';
+function csv(t){const g=[];let r=[],c='',q=0;for(let i=0;i<t.length;i++){const ch=t[i];if(q){if(ch=='"'){if(t[i+1]=='"'){c+='"';i++}else q=0}else c+=ch}else if(ch=='"')q=1;else if(ch==','){r.push(c);c=''}else if(ch=='\n'||ch=='\r'){if(ch=='\r'&&t[i+1]=='\n')i++;r.push(c);g.push(r);r=[];c=''}else c+=ch}if(c||r.length){r.push(c);g.push(r)}return g}
+function parseCur(g){const cur={};let bs=[],sp=[];
+for(let i=0;i<g.length;i++){const r=g[i].map(x=>(x==null?'':x).toString().trim());
+if(r[1]==='รายการ'){const pr=(g[i-1]||[]).map(x=>(x==null?'':x).toString().trim());let b='';bs=[];sp=[];for(let c=2;c<r.length;c++){if(pr[c]!=='')b=pr[c];bs[c]=b;sp[c]=r[c]}continue}
+if(!bs.length||!r[1])continue;
+for(let c=2;c<r.length;c++){const v=parseFloat((r[c]||'').replace(/,/g,''));if(!sp[c]||!bs[c]||isNaN(v))continue;
+const B=cur[bs[c]]=cur[bs[c]]||{region:r[0],p:{},order:[]};if(r[0])B.region=r[0];if(!B.p[r[1]]){B.p[r[1]]={};B.order.push(r[1])}B.p[r[1]][sp[c]]=v}}
+return cur}
+async function loadCur(){let g=null;
+if(D&&D.cur)g=D.cur;
+else{try{const x=await fetch('https://docs.google.com/spreadsheets/d/'+SID+'/export?format=csv&gid='+GID);if(!x.ok)throw 0;const t=await x.text();g=csv(t);try{localStorage.setItem('dc',t)}catch(e){}}
+catch(e){try{const t=localStorage.getItem('dc');if(t)g=csv(t)}catch(x){}}}
+if(g){CUR=parseCur(g);CERR=0}else CERR=1;draw()}
+const mt=(n,s)=>{n=(n||'').replace(/\s/g,'');s=(s||'').replace(/\s/g,'');return !!n&&!!s&&(n.includes(s)||s.includes(n))};
+const rk=(B,p)=>Object.entries(B.p[p]||{}).sort((a,b)=>a[1]-b[1]);
+function recOne(b,o){const B=CUR[b];if(!B)return `<div class="c nt">ยังไม่มีต้นทุนปัจจุบันของสาขา ${b} ในชีต "ต้นทุนปัจจุบัน"</div>`;
+const win={};let n=0;
+const rows=B.order.map(p=>{const e=rk(B,p);if(!e.length)return '';n++;win[e[0][0]]=(win[e[0][0]]||0)+1;const e2=e[1];
+return `<tr><td>${p}</td><td class="lo">${e[0][0]}</td><td class="lo">${f(e[0][1])}</td><td>${e2?e2[0]:'–'}</td><td>${e2?f(e2[1]):'–'}</td><td>${e2?(e2[1]-e[0][1]>0?'+'+f(e2[1]-e[0][1]):'เท่ากัน'):'–'}</td></tr>`}).join('');
+const best=Object.entries(win).sort((a,b)=>b[1]-a[1])[0];
+const ins=[];if(best)ins.push(`<b>${best[0]}</b> ถูกสุดมากที่สุด ${best[1]} จาก ${n} รายการ`);
+[[0,'ทราย'],[3,'หิน']].forEach(([pi,w])=>{const p=B.order[pi];if(!p)return;const e=rk(B,p);if(!e.length)return;const vi=pi<3?0:1,mn=topOf(o,vi)[0],tot=sm(Object.values(o).map(x=>x[vi]));if(mn=='–')return;
+const m=e.find(x=>mt(x[0],mn));if(!m){ins.push(`${w}: เจ้าหลักเดิม <b>${mn}</b> ไม่มีราคาปัจจุบันในชีต (หรือไม่ได้ขายสาขานี้)`);return}
+if(m[0]==e[0][0]||m[1]<=e[0][1])ins.push(`${w}: เจ้าหลักเดิม <b>${m[0]}</b> ถูกสุดอยู่แล้ว (฿${f(m[1])}/คิว) ✔`);
+else{const d=m[1]-e[0][1];ins.push(`${w}: ย้ายจาก <b>${m[0]}</b> (฿${f(m[1])}) ไป <b>${e[0][0]}</b> (฿${f(e[0][1])}) ประหยัด <span class="pos">฿${f(d)}/คิว</span> · ถ้าย้ายทั้งหมด ≈ ฿${f(d*tot)} ตามปริมาณช่วงที่เลือก`)}});
+return `<div class="c ins"><h2>🎯 แนะนำซื้อ สาขา ${b} — ต้นทุนปัจจุบัน</h2><div class="tw"><table><tr><th>สินค้า</th><th>ซื้อจาก (ถูกสุด)</th><th>฿/คิว</th><th>ถูกรองลงมา</th><th>฿/คิว</th><th>ต่างกัน</th></tr>${rows}</table></div><ul>${ins.map(x=>`<li>${x}</li>`).join('')}</ul><div class="sub">ช่องว่างในชีต = ซัพไม่ได้ขายให้สาขานี้ ไม่นำมาเทียบ</div></div>`}
+function recAll(bl){const ps=[];bl.forEach(b=>CUR[b].order.forEach(p=>{if(!ps.includes(p))ps.push(p)}));
+const rows=bl.map(b=>`<tr><td>สาขา ${b}</td>${ps.map(p=>{const e=rk(CUR[b],p);return e.length?`<td>${e[0][0]}<br><b>${f(e[0][1])}</b></td>`:'<td>–</td>'}).join('')}</tr>`).join('');
+return `<div class="c ins"><h2>🎯 ซัพที่ถูกสุดตามต้นทุนปัจจุบัน แยกสาขา</h2><div class="tw"><table><tr><th>สาขา</th>${ps.map(p=>`<th>${p}</th>`).join('')}</tr>${rows}</table></div><div class="sub" style="margin-top:6px">กดเลือกสาขาด้านบนเพื่อดูคำแนะนำละเอียดของสาขานั้น · ช่องว่างในชีต = ซัพไม่ได้ขายสาขานั้น</div></div>`}
+function rec(o){if(!CUR)return CERR?'<div class="c nt">โหลดต้นทุนปัจจุบันไม่สำเร็จ (ชีตอาจไม่ได้เปิดแชร์ หรือเบราว์เซอร์บล็อก) — ดูวิธีแก้จากผู้พัฒนา</div>':'';
+const rg=tab=='bkk'?'กรุงเทพ':'พัทยา',bl=Object.keys(CUR).filter(b=>CUR[b].region==rg).sort((a,b)=>a-b);
+if(!bl.length)return '';
+if(br!='all')return recOne(String(br),o);
+return bl.length==1?recOne(bl[0],o):recAll(bl)}
 function draw(){const d=D[tab],P=d.prods,mname=mo<0?'ทุกเดือน ('+d.months[0]+'–'+d.months[d.months.length-1]+')':d.months[mo];
 const brs=[...new Set(d.rows.map(r=>r[1]))].sort((a,b)=>a-b);
 tabs.innerHTML=[['bkk','กรุงเทพ'],['pty','พัทยา']].map(([k,n])=>`<button class="${tab==k?'on':''}" onclick="tab='${k}';br='all';mo=-1;draw()">${n}</button>`).join('');
 document.getElementById('mo').innerHTML='<small>เดือน</small>'+[-1,...d.months.keys()].map(m=>`<button class="${mo==m?'on':''}" onclick="mo=${m};draw()">${m<0?'ทั้งหมด':d.months[m]}</button>`).join('');
 chips.innerHTML=brs.length>1?'<small>สาขา</small>'+['all',...brs].map(b=>`<button class="${br==b?'on':''}" onclick="br='${b}';draw()">${b=='all'?'ทุกสาขา':b}</button>`).join(''):'';
-sub.textContent=(tab=='bkk'?'กรุงเทพ'+(br=='all'?' ทุกสาขา':' สาขา '+br):'พัทยา')+' · '+mname+' · เฉพาะซัพหลักที่จัดกลุ่มไว้ (ไม่รวม "อื่นๆ")';
+sub.textContent=(tab=='bkk'?'กรุงเทพ'+(br=='all'?' ทุกสาขา':' สาขา '+br):'พัทยา')+' · '+mname+' · เฉพาะซัพหลักที่จัดกลุ่มไว้ (ไม่รวม "อื่นๆ")'+SUF;
 const R=d.rows.filter(r=>(mo<0||r[0]==mo)&&(br=='all'||r[1]==br)),o=volBy(R),ts=topOf(o,0),th=topOf(o,1),c=costs(R);
 const T=d.tot.filter(t=>mo<0||t.m==mo),showP=br=='all'&&T.length;
 const pw=k=>[0,1,2,3,4,5].map(i=>wav(T.map(t=>[t[k][i],t.vs,t.vr]),i)),pb=pw('b'),ps=pw('s'),pp=pw('p');
@@ -57,6 +93,7 @@ let h=`<div class="kp">${kp('ซื้อทรายมากสุดจาก
 h+=`<div class="g2"><div class="c"><h2>🟡 สัดส่วนซื้อทราย (ปริมาณคิว)</h2>${bars(o,0,COL[0])}</div><div class="c"><h2>⚪ สัดส่วนซื้อหิน (ปริมาณคิว)</h2>${bars(o,1,COL[1])}</div></div>`;
 const sups=Object.keys(o).sort((a,b)=>sm(o[b])-sm(o[a])),cs=sups.map(s=>costs(R.filter(r=>r[2]==s))),mn=P.map((_,i)=>Math.min(...cs.map(x=>x[i]).filter(x=>x!=null))),mxx=P.map((_,i)=>Math.max(...cs.map(x=>x[i]).filter(x=>x!=null)));
 h+=`<div class="c"><h2>💰 ต้นทุนซื้อเฉลี่ย บาท/คิว แยกซัพ — <span style="color:var(--good)">เขียว = ถูกสุด</span> · <span style="color:var(--bad)">แดง = แพงสุด</span></h2><div class="tw"><table><tr><th>ซัพ</th>${P.map(x=>`<th>${x}</th>`).join('')}</tr>${sups.map((s,k)=>`<tr><td>${s}</td>${cs[k].map((x,i)=>`<td class="${sups.length>1&&x!=null&&x!==mxx[i]&&x===mn[i]?'lo':sups.length>1&&x!=null&&x===mxx[i]&&x!==mn[i]?'hx':''}">${f(x)}</td>`).join('')}</tr>`).join('')}<tr><td><b>เฉลี่ยทุกซัพ</b></td>${c.map(x=>`<td><b>${f(x)}</b></td>`).join('')}</tr></table></div><div class="sub" style="margin-top:6px">เฉลี่ยถ่วงน้ำหนักตามปริมาณคิว</div></div>`;
+h+=rec(o);
 if(showP)h+=`<div class="c"><h2>📊 ต้นทุน / ราคาขาย / กำไร ต่อคิว (รวมทุกสาขา)</h2><div class="tw"><table><tr><th>สินค้า</th><th>ต้นทุนซื้อ</th><th>ราคาขาย</th><th>กำไร/คิว</th><th>% กำไร</th></tr>${P.map((x,i)=>pp[i]==null?'':`<tr><td>${x}</td><td>${f(pb[i])}</td><td>${f(ps[i])}</td><td class="pos">${f(pp[i])}</td><td>${(pp[i]/ps[i]*100).toFixed(0)}%</td></tr>`).join('')}</table></div><div class="sub" style="margin-top:6px">กำไร = ราคาขาย − ต้นทุนซื้อ − ค่าน้ำมันเพิ่ม (เฉลี่ย ฿${f(fuel)}/คิว)</div></div>
 <div class="c"><h2>📈 กำไรต่อคิว รายเดือน (บาท)</h2>${line(d,[0,3,4])}<div class="lg">${[0,3,4].map((i,j)=>`<span><b style="background:${COL[j]}"></b>${P[i]}</span>`).join('')}</div></div>`;
 if(br=='all'&&brs.length>1){const rows=brs.map(b=>{const Rb=R.filter(r=>r[1]==b),ob=volBy(Rb),a=topOf(ob,0),s=topOf(ob,1),cb=costs(Rb);return `<tr><td>สาขา ${b}</td><td>${a[0]} (${a[1].toFixed(0)}%)</td><td>${s[1]?s[0]+' ('+s[1].toFixed(0)+'%)':'–'}</td><td>${f(sm(Object.values(ob).map(v=>v[0])))}</td><td>${f(sm(Object.values(ob).map(v=>v[1])))}</td><td>${f(cb[0])}</td><td>${f(cb[3])}</td></tr>`}).join('');
@@ -71,7 +108,7 @@ if(q){try{localStorage.setItem('dk',q)}catch(e){}history.replaceState(null,'',lo
 function askKey(m){tabs.innerHTML='';document.getElementById("mo").innerHTML='';chips.innerHTML='';out.innerHTML=`<div class="c"><h2>🔑 ใส่รหัสเข้าใช้งาน</h2>${m?'<div class="sub" style="color:var(--bad)">'+m+'</div>':''}<input id="ki" type="password" placeholder="รหัส (SECRET)"><button class="on" onclick="try{localStorage.setItem('dk',ki.value.trim())}catch(e){};load()">เข้าสู่ระบบ</button><div class="sub" style="margin-top:8px">รหัสเก็บในเครื่องนี้เท่านั้น ไม่ได้อยู่ในโค้ดบน GitHub</div></div>`}
 async function load(fresh){const key=getKey();if(!key){askKey();return}out.innerHTML='<div class="c">กำลังโหลดข้อมูล…</div>';
 try{const r=await fetch(API+'?key='+encodeURIComponent(key)+(fresh?'&fresh=1':''));const j=await r.json();if(j.error){try{localStorage.removeItem('dk')}catch(e){}askKey('รหัสไม่ถูกต้อง');return}
-D=j;try{localStorage.setItem('dd',JSON.stringify(j))}catch(e){}draw();sub.textContent+=' · อัปเดต '+(j.updated||'')}
-catch(e){let c=null;try{c=JSON.parse(localStorage.getItem('dd'))}catch(x){}if(c){D=c;draw();sub.textContent+=' · ⚠️ ออฟไลน์ แสดงข้อมูลล่าสุดที่เก็บไว้ ('+(c.updated||'')+')'}else out.innerHTML='<div class="c">โหลดข้อมูลไม่สำเร็จ ตรวจสอบอินเทอร์เน็ตหรือลิงก์ Apps Script</div>'}}
+D=j;try{localStorage.setItem('dd',JSON.stringify(j))}catch(e){}SUF=' · อัปเดต '+(j.updated||'');draw();loadCur()}
+catch(e){let c=null;try{c=JSON.parse(localStorage.getItem('dd'))}catch(x){}if(c){D=c;SUF=' · ⚠️ ออฟไลน์ แสดงข้อมูลล่าสุดที่เก็บไว้ ('+(c.updated||'')+')';draw();loadCur()}else out.innerHTML='<div class="c">โหลดข้อมูลไม่สำเร็จ ตรวจสอบอินเทอร์เน็ตหรือลิงก์ Apps Script</div>'}}
 load();
 </script></body></html>
