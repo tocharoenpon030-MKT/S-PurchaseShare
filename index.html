@@ -1,31 +1,77 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>แดชบอร์ดต้นทุนและกำไรหินทราย</title>
+<!DOCTYPE html><html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>แดชบอร์ดจัดซื้อ ทราย-หิน</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f4f5f7;--card:#fff;--tx:#1f2937;--mu:#6b7280;--ln:#e5e7eb;--ac:#d97706;color-scheme:light}
-@media (prefers-color-scheme:dark){:root{--bg:#111827;--card:#1f2937;--tx:#f3f4f6;--mu:#9ca3af;--ln:#374151;--ac:#f59e0b;color-scheme:dark}}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--tx);font-family:Tahoma,'Noto Sans Thai',sans-serif;padding:16px;max-width:1200px;margin:auto}
-h1{font-size:20px;margin:0 0 6px}
-.mu{color:var(--mu);font-size:13px;margin:0 0 12px}
-.bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
-a.btn{background:var(--ac);color:#fff;text-decoration:none;padding:9px 16px;border-radius:8px;font-weight:700}
-a.data{margin-left:auto;background:#16a34a}
-@media (max-width:600px){body{padding:10px}a.btn{flex:1;text-align:center}iframe{height:80vh}}
-iframe{width:100%;height:85vh;border:1px solid var(--ln);border-radius:12px;background:var(--card)}
-</style>
-</head>
-<body>
-<h1>แดชบอร์ดต้นทุนและกำไรหินทราย</h1>
-<p class="mu">ข้อมูลเป็นความลับ — เปิดดูได้เฉพาะบัญชี Google ที่ได้รับสิทธิ์เข้าถึงชีตเท่านั้น</p>
-<div class="bar">
-  <a class="btn" href="https://script.google.com/macros/s/AKfycbzPZrGOin1o1HVcz9u16AIO8Kgrtj7wzTMTb6gJJ9khD8Ldt6fK1Aq6fcMljg_lHHcI/exec" target="_blank" rel="noopener">เปิดแดชบอร์ด (แท็บใหม่)</a>
-  <a class="btn data" href="https://docs.google.com/spreadsheets/d/1NRcslhSAtKtuFfSMFv9SxPis9Xe8CvMgslF6T-1YIwk/edit" target="_blank" rel="noopener">DATA</a>
-</div>
-<p class="mu">ถ้ากรอบด้านล่างว่างหรือขอให้ล็อกอิน ให้กดปุ่ม "เปิดแดชบอร์ด" แทน</p>
-<iframe src="https://script.google.com/macros/s/AKfycbzPZrGOin1o1HVcz9u16AIO8Kgrtj7wzTMTb6gJJ9khD8Ldt6fK1Aq6fcMljg_lHHcI/exec" title="แดชบอร์ดต้นทุนและกำไรหินทราย" loading="lazy"></iframe>
-</body>
-</html>
+:root{--bg:#f6f5f1;--card:#fff;--tx:#1d1d1b;--mu:#6b6a64;--bd:#e4e2da;--sand:#d99a1e;--stone:#5b6b7a;--teal:#2a9d8f;--good:#1a8f55;--bad:#c0392b;--hi:#e6f4ea;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17171a;--card:#212125;--tx:#f0efe9;--mu:#9a998f;--bd:#33333a;--hi:#16332a;--stone:#8fa3b5}}
+:root[data-theme="dark"]{--bg:#17171a;--card:#212125;--tx:#f0efe9;--mu:#9a998f;--bd:#33333a;--hi:#16332a;--stone:#8fa3b5}
+*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--tx);font-family:'Noto Sans Thai',system-ui,sans-serif;font-size:15px;line-height:1.5}
+.w{max-width:1000px;margin:auto;padding:16px}h1{font-size:20px;margin:4px 0 2px}.sub{color:var(--mu);font-size:12px}.top{display:flex;justify-content:space-between;align-items:center;gap:8px}.acts{display:flex;gap:6px;align-items:center}
+.dl{padding:6px 16px;border-radius:99px;background:var(--tx);color:var(--bg);text-decoration:none;font-weight:700;font-size:13px}
+.row.sc{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}.row.sc button,.row.sc small{flex:none}.tabs button{flex:1}
+input{font:inherit;width:100%;padding:8px 12px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);margin:8px 0}
+@media(max-width:520px){.w{padding:12px}h1{font-size:17px}.br{grid-template-columns:84px 1fr 40px}.k .v{font-size:18px}.c{padding:12px}}
+.row{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0;align-items:center}.row small{color:var(--mu);margin-right:4px}
+button{font:inherit;font-size:13px;border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:4px 12px;border-radius:99px;cursor:pointer}
+button.on{background:var(--tx);color:var(--bg);border-color:var(--tx)}.tabs button{font-weight:700;font-size:15px;padding:7px 22px}
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:12px 0}
+.c{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:10px}.c h2{font-size:15px;margin:0 0 10px}
+.k{margin:0}.k .l{color:var(--mu);font-size:12px}.k .v{font-size:21px;font-weight:700}.k .s{color:var(--mu);font-size:12px}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px}
+.br{display:grid;grid-template-columns:96px 1fr 44px;gap:8px;align-items:center;margin:6px 0;font-size:13px}
+.bt{background:var(--bd);border-radius:6px;height:16px;overflow:hidden}.bt i{display:block;height:100%;border-radius:6px}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:7px 8px;text-align:right;border-bottom:1px solid var(--bd);white-space:nowrap}th:first-child,td:first-child{text-align:left}th{color:var(--mu);font-weight:600}
+td.lo{background:var(--hi);color:var(--good);font-weight:700}.ins{border-left:4px solid var(--sand)}.ins li{margin:4px 0}.nt{border-left:4px solid var(--mu);font-size:12px;color:var(--mu)}
+.pos{color:var(--good);font-weight:700}svg{width:100%;height:auto}.lg{display:flex;gap:14px;font-size:12px;color:var(--mu);margin-top:4px;flex-wrap:wrap}.lg b{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}
+</style></head><body><div class="w">
+<div class="top"><h1>🪨 จัดซื้อ ทราย-หิน</h1><div class="acts"><button onclick="load(true)" title="รีเฟรช">⟳</button><a class="dl" href="https://docs.google.com/spreadsheets/d/1NRcslhSAtKtuFfSMFv9SxPis9Xe8CvMgslF6T-1YIwk/edit" target="_blank" rel="noopener">DATA</a></div></div><div class="sub" id="sub"></div>
+<div class="row tabs" id="tabs"></div><div class="row sc" id="mo"></div><div class="row sc" id="chips"></div><div id="out"></div></div>
+<script>
+let D;const API='https://script.google.com/macros/s/AKfycbypo9kuWyCcWvC0N6IOGRdYREe1GF0OkZ4HjQ6mrJvoS4Df_QbuiB4_-vOgJKPTt8KA/exec';
+let tab='bkk',br='all',mo=-1;
+const COL=['var(--sand)','var(--stone)','var(--teal)'];
+const f=x=>x==null?'–':Math.round(x).toLocaleString('en'),sm=a=>a.reduce((s,x)=>s+x,0);
+const W=(i,vs,vr)=>i<3?vs:vr;
+function wav(items,i){let a=0,b=0;items.forEach(([v,vs,vr])=>{const w=W(i,vs||0,vr||0);if(v!=null&&w>0){a+=v*w;b+=w}});return b?a/b:null}
+function costs(R){return [0,1,2,3,4,5].map(i=>wav(R.map(r=>[r[5][i],r[3],r[4]]),i))}
+function volBy(R){const o={};R.forEach(r=>{o[r[2]]=o[r[2]]||[0,0];o[r[2]][0]+=r[3];o[r[2]][1]+=r[4]});return o}
+function top(o,i){const t=sm(Object.values(o).map(x=>x[i]));const e=Object.entries(o).sort((a,b)=>b[1][i]-a[1][i])[0];return e&&t&&e[1][i]>0?[e[0],e[1][i]/t*100]:['–',0]}
+function bars(o,i,col){const t=sm(Object.values(o).map(x=>x[i]))||1;return Object.entries(o).filter(e=>e[1][i]>0).sort((a,b)=>b[1][i]-a[1][i]).map(([s,v])=>`<div class="br"><span>${s}</span><div class="bt"><i style="width:${v[i]/t*100}%;background:${col}"></i></div><b>${(v[i]/t*100).toFixed(0)}%</b></div>`).join('')+`<div class="sub">รวม ${f(t)} คิว</div>`}
+const kp=(l,v,s)=>`<div class="c k"><div class="l">${l}</div><div class="v">${v}</div><div class="s">${s||''}</div></div>`;
+function line(d,idx){const n=d.months.length,Wd=620,H=230,L=48,B=24,T=10,all=idx.flatMap(i=>d.tot.map(t=>t.p[i])).filter(v=>v!=null),mx=Math.ceil(Math.max(...all)/200)*200,x=i=>L+i*(Wd-L-10)/(n-1),y=v=>H-B-v/mx*(H-B-T);
+let s=`<svg viewBox="0 0 ${Wd} ${H}">`;for(let g=0;g<=mx;g+=mx/4)s+=`<line x1="${L}" x2="${Wd-10}" y1="${y(g)}" y2="${y(g)}" stroke="var(--bd)"/><text x="${L-6}" y="${y(g)+4}" font-size="11" text-anchor="end" fill="var(--mu)">${f(g)}</text>`;
+d.months.forEach((m,i)=>s+=`<text x="${x(i)}" y="${H-6}" font-size="11" text-anchor="middle" fill="var(--mu)">${m}</text>`);
+idx.forEach((pi,j)=>{const p=Array(n).fill(null);d.tot.forEach(t=>p[t.m]=t.p[pi]);let dd='';p.forEach((v,i)=>{if(v==null)return;dd+=(dd&&p[i-1]!=null?'L':'M')+x(i)+' '+y(v)});s+=`<path d="${dd}" fill="none" stroke="${COL[j]}" stroke-width="2.5"/>`;p.forEach((v,i)=>{if(v!=null)s+=`<circle cx="${x(i)}" cy="${y(v)}" r="3.5" fill="${COL[j]}"/>`})});return s+'</svg>'}
+function draw(){const d=D[tab],P=d.prods,mname=mo<0?'ทุกเดือน ('+d.months[0]+'–'+d.months[d.months.length-1]+')':d.months[mo];
+const brs=[...new Set(d.rows.map(r=>r[1]))].sort((a,b)=>a-b);
+tabs.innerHTML=[['bkk','กรุงเทพ'],['pty','พัทยา']].map(([k,n])=>`<button class="${tab==k?'on':''}" onclick="tab='${k}';br='all';mo=-1;draw()">${n}</button>`).join('');
+document.getElementById('mo').innerHTML='<small>เดือน</small>'+[-1,...d.months.keys()].map(m=>`<button class="${mo==m?'on':''}" onclick="mo=${m};draw()">${m<0?'ทั้งหมด':d.months[m]}</button>`).join('');
+chips.innerHTML=brs.length>1?'<small>สาขา</small>'+['all',...brs].map(b=>`<button class="${br==b?'on':''}" onclick="br='${b}';draw()">${b=='all'?'ทุกสาขา':b}</button>`).join(''):'';
+sub.textContent=(tab=='bkk'?'กรุงเทพ'+(br=='all'?' ทุกสาขา':' สาขา '+br):'พัทยา')+' · '+mname+' · เฉพาะซัพหลักที่จัดกลุ่มไว้ (ไม่รวม "อื่นๆ")';
+const R=d.rows.filter(r=>(mo<0||r[0]==mo)&&(br=='all'||r[1]==br)),o=volBy(R),ts=top(o,0),th=top(o,1),c=costs(R);
+const T=d.tot.filter(t=>mo<0||t.m==mo),showP=br=='all'&&T.length;
+const pw=k=>[0,1,2,3,4,5].map(i=>wav(T.map(t=>[t[k][i],t.vs,t.vr]),i)),pb=pw('b'),ps=pw('s'),pp=pw('p');
+const fuel=T.length?sm(T.map(t=>t.fuel||0))/T.length:null;
+let h=`<div class="kp">${kp('ซื้อทรายมากสุดจาก',ts[0],ts[1].toFixed(0)+'% ของปริมาณทราย')}${kp('ซื้อหินมากสุดจาก',th[0],th[1].toFixed(0)+'% ของปริมาณหิน')}${kp('ต้นทุน'+P[0]+'/คิว','฿'+f(c[0]),'เฉลี่ยทุกซัพ')}${kp('ต้นทุน'+P[3]+'/คิว','฿'+f(c[3]),'เฉลี่ยทุกซัพ')}${kp('กำไร/คิว '+P[0],showP?'฿'+f(pp[0]):'–',showP?'ขาย ฿'+f(ps[0]):'มีเฉพาะ "ทุกสาขา"')}${kp('กำไร/คิว '+P[3],showP?'฿'+f(pp[3]):'–',showP?'ขาย ฿'+f(ps[3]):'มีเฉพาะ "ทุกสาขา"')}</div>`;
+h+=`<div class="g2"><div class="c"><h2>🟡 สัดส่วนซื้อทราย (ปริมาณคิว)</h2>${bars(o,0,COL[0])}</div><div class="c"><h2>⚪ สัดส่วนซื้อหิน (ปริมาณคิว)</h2>${bars(o,1,COL[1])}</div></div>`;
+const sups=Object.keys(o).sort((a,b)=>sm(o[b])-sm(o[a])),cs=sups.map(s=>costs(R.filter(r=>r[2]==s))),mn=P.map((_,i)=>Math.min(...cs.map(x=>x[i]).filter(x=>x!=null)));
+h+=`<div class="c"><h2>💰 ต้นทุนซื้อเฉลี่ย บาท/คิว แยกซัพ — เขียว = ถูกสุด</h2><div class="tw"><table><tr><th>ซัพ</th>${P.map(x=>`<th>${x}</th>`).join('')}</tr>${sups.map((s,k)=>`<tr><td>${s}</td>${cs[k].map((x,i)=>`<td class="${sups.length>1&&x!=null&&x===mn[i]?'lo':''}">${f(x)}</td>`).join('')}</tr>`).join('')}<tr><td><b>เฉลี่ยทุกซัพ</b></td>${c.map(x=>`<td><b>${f(x)}</b></td>`).join('')}</tr></table></div><div class="sub" style="margin-top:6px">เฉลี่ยถ่วงน้ำหนักตามปริมาณคิว</div></div>`;
+if(showP)h+=`<div class="c"><h2>📊 ต้นทุน / ราคาขาย / กำไร ต่อคิว (รวมทุกสาขา)</h2><div class="tw"><table><tr><th>สินค้า</th><th>ต้นทุนซื้อ</th><th>ราคาขาย</th><th>กำไร/คิว</th><th>% กำไร</th></tr>${P.map((x,i)=>pp[i]==null?'':`<tr><td>${x}</td><td>${f(pb[i])}</td><td>${f(ps[i])}</td><td class="pos">${f(pp[i])}</td><td>${(pp[i]/ps[i]*100).toFixed(0)}%</td></tr>`).join('')}</table></div><div class="sub" style="margin-top:6px">กำไร = ราคาขาย − ต้นทุนซื้อ − ค่าน้ำมันเพิ่ม (เฉลี่ย ฿${f(fuel)}/คิว)</div></div>
+<div class="c"><h2>📈 กำไรต่อคิว รายเดือน (บาท)</h2>${line(d,[0,3,4])}<div class="lg">${[0,3,4].map((i,j)=>`<span><b style="background:${COL[j]}"></b>${P[i]}</span>`).join('')}</div></div>`;
+if(br=='all'&&brs.length>1){const rows=brs.map(b=>{const Rb=R.filter(r=>r[1]==b),ob=volBy(Rb),a=top(ob,0),s=top(ob,1),cb=costs(Rb);return `<tr><td>สาขา ${b}</td><td>${a[0]} (${a[1].toFixed(0)}%)</td><td>${s[1]?s[0]+' ('+s[1].toFixed(0)+'%)':'–'}</td><td>${f(sm(Object.values(ob).map(v=>v[0])))}</td><td>${f(sm(Object.values(ob).map(v=>v[1])))}</td><td>${f(cb[0])}</td><td>${f(cb[3])}</td></tr>`}).join('');
+h+=`<div class="c"><h2>🏬 เจ้าหลักและต้นทุนรายสาขา</h2><div class="tw"><table><tr><th>สาขา</th><th>ทรายหลัก</th><th>หินหลัก</th><th>ทราย(คิว)</th><th>หิน(คิว)</th><th>${P[0]} ฿</th><th>${P[3]} ฿</th></tr>${rows}</table></div></div>`}
+const ins=[];[[0,'ทราย',P[0]],[1,'หิน',P[3]]].forEach(([vi,w,pn])=>{const pi=vi?3:0,L=sups.map((s,k)=>[s,cs[k][pi],o[s][vi]]).filter(x=>x[1]!=null&&x[2]>0);if(L.length>1){const ch=[...L].sort((a,b)=>a[1]-b[1])[0],tp=top(o,vi),tc=L.find(x=>x[0]==tp[0]);if(tc&&ch[0]!=tp[0])ins.push(`${pn}: <b>${ch[0]}</b> ถูกสุด ฿${f(ch[1])} แต่ซื้อแค่ ${(ch[2]/sm(Object.values(o).map(x=>x[vi]))*100).toFixed(0)}% ของ${w} · เจ้าหลัก <b>${tp[0]}</b> ฿${f(tc[1])} (แพงกว่า ฿${f(tc[1]-ch[1])}/คิว)`);else if(tc)ins.push(`${pn}: เจ้าหลัก <b>${tp[0]}</b> ถูกสุดอยู่แล้ว (฿${f(tc[1])}/คิว)`)}});
+if(showP){const bi=pp.map((v,i)=>[v,i]).filter(x=>x[0]!=null).sort((a,b)=>b[0]-a[0])[0];ins.push(`กำไรต่อคิวสูงสุดคือ <b>${P[bi[1]]}</b> ฿${f(bi[0])}/คิว`)}
+if(ins.length)h+=`<div class="c ins"><h2>💡 ข้อสังเกต</h2><ul>${ins.map(x=>`<li>${x}</li>`).join('')}</ul></div>`;
+h+=`<div class="c nt">หมายเหตุ: ราคาขาย/กำไรในไฟล์มีเฉพาะระดับ "รวมทุกสาขา" (ไม่แยกสาขา/ซัพ) · สัดส่วนนับเฉพาะซัพ 4 เจ้าที่จัดกลุ่มไว้ ซัพรายอื่นไม่รวม · ข้อมูลลับ ห้ามเผยแพร่</div>`;
+out.innerHTML=h}
+function getKey(){const p=new URLSearchParams(location.search),h=new URLSearchParams(location.hash.slice(1)),q=p.get('key')||h.get('key');
+if(q){try{localStorage.setItem('dk',q)}catch(e){}history.replaceState(null,'',location.pathname)}try{return localStorage.getItem('dk')||''}catch(e){return ''}}
+function askKey(m){tabs.innerHTML='';document.getElementById("mo").innerHTML='';chips.innerHTML='';out.innerHTML=`<div class="c"><h2>🔑 ใส่รหัสเข้าใช้งาน</h2>${m?'<div class="sub" style="color:var(--bad)">'+m+'</div>':''}<input id="ki" type="password" placeholder="รหัส (SECRET)"><button class="on" onclick="try{localStorage.setItem('dk',ki.value.trim())}catch(e){};load()">เข้าสู่ระบบ</button><div class="sub" style="margin-top:8px">รหัสเก็บในเครื่องนี้เท่านั้น ไม่ได้อยู่ในโค้ดบน GitHub</div></div>`}
+async function load(fresh){const key=getKey();if(!key){askKey();return}out.innerHTML='<div class="c">กำลังโหลดข้อมูล…</div>';
+try{const r=await fetch(API+'?key='+encodeURIComponent(key)+(fresh?'&fresh=1':''));const j=await r.json();if(j.error){try{localStorage.removeItem('dk')}catch(e){}askKey('รหัสไม่ถูกต้อง');return}
+D=j;try{localStorage.setItem('dd',JSON.stringify(j))}catch(e){}draw();sub.textContent+=' · อัปเดต '+(j.updated||'')}
+catch(e){let c=null;try{c=JSON.parse(localStorage.getItem('dd'))}catch(x){}if(c){D=c;draw();sub.textContent+=' · ⚠️ ออฟไลน์ แสดงข้อมูลล่าสุดที่เก็บไว้ ('+(c.updated||'')+')'}else out.innerHTML='<div class="c">โหลดข้อมูลไม่สำเร็จ ตรวจสอบอินเทอร์เน็ตหรือลิงก์ Apps Script</div>'}}
+load();
+</script></body></html>
