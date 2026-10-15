@@ -28,7 +28,7 @@ td.lo{background:var(--hi);color:var(--good);font-weight:700}td.hx{background:va
 <div class="top"><h1>🪨 จัดซื้อ ทราย-หิน</h1><div class="acts"><button onclick="load(true)" title="รีเฟรช">⟳</button><a class="dl" href="https://docs.google.com/spreadsheets/d/1NRcslhSAtKtuFfSMFv9SxPis9Xe8CvMgslF6T-1YIwk/edit" target="_blank" rel="noopener">DATA</a></div></div><div class="sub" id="sub"></div>
 <div class="row tabs" id="tabs"></div><div class="row sc" id="mo"></div><div class="row sc" id="chips"></div><div id="out"></div></div>
 <script>
-let SUF='',CUR=null,CERR=0;let D;const API='https://script.google.com/macros/s/AKfycbypo9kuWyCcWvC0N6IOGRdYREe1GF0OkZ4HjQ6mrJvoS4Df_QbuiB4_-vOgJKPTt8KA/exec';
+let SUF='',CUR=null,CERR=0;let D;const API='https://script.google.com/macros/s/AKfycby2xg8hfaVvDS2Bjx3BB-Jxjc8SXspxXHJ6RJHFZOChNlS6jl8AtgtEXIFCga-Q1bip/exec';
 let tab='bkk',br='all',mo=-1;
 const COL=['var(--sand)','var(--stone)','var(--teal)'];
 const f=x=>x==null?'–':Math.round(x).toLocaleString('en'),sm=a=>a.reduce((s,x)=>s+x,0);
@@ -66,11 +66,12 @@ const rows=B.order.map(p=>{const e=rk(B,p);if(!e.length)return '';n++;win[e[0][0
 return `<tr><td>${p}</td><td class="lo">${e[0][0]}</td><td class="lo">${f(e[0][1])}</td><td>${e2?e2[0]:'–'}</td><td>${e2?f(e2[1]):'–'}</td><td>${e2?(e2[1]-e[0][1]>0?'+'+f(e2[1]-e[0][1]):'เท่ากัน'):'–'}</td></tr>`}).join('');
 const best=Object.entries(win).sort((a,b)=>b[1]-a[1])[0];
 const ins=[];if(best)ins.push(`<b>${best[0]}</b> ถูกสุดมากที่สุด ${best[1]} จาก ${n} รายการ`);
-[[0,'ทราย'],[3,'หิน']].forEach(([pi,w])=>{const p=B.order[pi];if(!p)return;const e=rk(B,p);if(!e.length)return;const vi=pi<3?0:1,mn=topOf(o,vi)[0],tot=sm(Object.values(o).map(x=>x[vi]));if(mn=='–')return;
-const m=e.find(x=>mt(x[0],mn));if(!m){ins.push(`${w}: เจ้าหลักเดิม <b>${mn}</b> ไม่มีราคาปัจจุบันในชีต (หรือไม่ได้ขายสาขานี้)`);return}
-if(m[0]==e[0][0]||m[1]<=e[0][1])ins.push(`${w}: เจ้าหลักเดิม <b>${m[0]}</b> ถูกสุดอยู่แล้ว (฿${f(m[1])}/คิว) ✔`);
-else{const d=m[1]-e[0][1];ins.push(`${w}: ย้ายจาก <b>${m[0]}</b> (฿${f(m[1])}) ไป <b>${e[0][0]}</b> (฿${f(e[0][1])}) ประหยัด <span class="pos">฿${f(d)}/คิว</span> · ถ้าย้ายทั้งหมด ≈ ฿${f(d*tot)} ตามปริมาณช่วงที่เลือก`)}});
-return `<div class="c ins"><h2>🎯 แนะนำซื้อ สาขา ${b} — ต้นทุนปัจจุบัน</h2><div class="tw"><table><tr><th>สินค้า</th><th>ซื้อจาก (ถูกสุด)</th><th>฿/คิว</th><th>ถูกรองลงมา</th><th>฿/คิว</th><th>ต่างกัน</th></tr>${rows}</table></div><ul>${ins.map(x=>`<li>${x}</li>`).join('')}</ul><div class="sub">ช่องว่างในชีต = ซัพไม่ได้ขายให้สาขานี้ ไม่นำมาเทียบ</div></div>`}
+B.order.forEach(p=>{const e=rk(B,p);if(!e.length)return;const vi=p.includes('ทราย')?0:1,mn=topOf(o,vi)[0],[s1,v1]=e[0];
+const m=mn=='–'?null:e.find(x=>mt(x[0],mn));
+if(!m)ins.push(`<b>${p}</b>: ซื้อ <b>${s1}</b> ฿${f(v1)}/คิว`+(mn=='–'?'':` (เจ้าหลักเดิม ${mn} ไม่มีราคานี้)`));
+else if(m[0]==s1||m[1]<=v1)ins.push(`<b>${p}</b>: ซื้อ <b>${m[0]}</b> ต่อได้เลย ถูกสุดอยู่แล้ว ฿${f(m[1])}/คิว ✔`);
+else ins.push(`<b>${p}</b>: ย้ายจาก ${m[0]} (฿${f(m[1])}) ไป <b>${s1}</b> (฿${f(v1)}) ประหยัด <span class="pos">฿${f(m[1]-v1)}/คิว</span>`)});
+return `<div class="c ins"><h2>🎯 แนะนำซื้อ สาขา ${b} — ต้นทุนปัจจุบัน</h2><div class="tw"><table><tr><th>สินค้า</th><th>ซื้อจาก (ถูกสุด)</th><th>฿/คิว</th><th>ถูกรองลงมา</th><th>฿/คิว</th><th>ต่างกัน</th></tr>${rows}</table></div><ul>${ins.map(x=>`<li>${x}</li>`).join('')}</ul><div class="sub">เจ้าหลักเดิม = เจ้าที่สาขานี้ซื้อทราย/หินมากสุดในช่วงเดือนที่เลือก · ช่องว่างในชีต = ซัพไม่ได้ขายให้สาขานี้ ไม่นำมาเทียบ</div></div>`}
 function recAll(bl){const ps=[];bl.forEach(b=>CUR[b].order.forEach(p=>{if(!ps.includes(p))ps.push(p)}));
 const rows=bl.map(b=>`<tr><td>สาขา ${b}</td>${ps.map(p=>{const e=rk(CUR[b],p);return e.length?`<td>${e[0][0]}<br><b>${f(e[0][1])}</b></td>`:'<td>–</td>'}).join('')}</tr>`).join('');
 return `<div class="c ins"><h2>🎯 ซัพที่ถูกสุดตามต้นทุนปัจจุบัน แยกสาขา</h2><div class="tw"><table><tr><th>สาขา</th>${ps.map(p=>`<th>${p}</th>`).join('')}</tr>${rows}</table></div><div class="sub" style="margin-top:6px">กดเลือกสาขาด้านบนเพื่อดูคำแนะนำละเอียดของสาขานั้น · ช่องว่างในชีต = ซัพไม่ได้ขายสาขานั้น</div></div>`}
